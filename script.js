@@ -10,7 +10,6 @@ let melody = [];
 const notes = ["C4", "D4", "E4", "F4", "G4", "A4", "B4"];
 const keyboardEl = document.getElementById("keyboard");
 
-// Draw keyboard
 keyboardEl.innerHTML = "";
 notes.forEach(note => {
     const key = document.createElement("div");
@@ -25,9 +24,10 @@ function highlightKey(note) {
     if (key) key.classList.add("playing");
 }
 
-function generateRandomMelody(length = 8) {
-    return Array.from({ length }, () => notes[Math.floor(Math.random() * notes.length)]);
+function generateRandomMelody(length = 60) {
+  return Array.from({ length }, () => notes[Math.floor(Math.random() * notes.length)]);
 }
+
 
 function generateMusic() {
     melody = generateRandomMelody();
@@ -87,7 +87,6 @@ function animateWaveform() {
 
 document.getElementById("downloadMp3Btn").addEventListener("click", async () => {
   if (!melody || melody.length === 0) {
-    alert("Generate a melody first!");
     return;
   }
 
@@ -100,16 +99,13 @@ document.getElementById("downloadMp3Btn").addEventListener("click", async () => 
 
     offlineMelody.start(0);
     transport.start();
-  }, melody.length * 0.5); // assuming 8 notes at 4n = ~4s
+  }, melody.length * 0.5);
 
-  // Convert to WAV
   const wavData = audioBufferToWav(renderedBuffer);
 
-  // Convert WAV to MP3 using lamejs
   const mp3Blob = wavToMp3(wavData);
   const url = URL.createObjectURL(mp3Blob);
 
-  // Trigger download
   const a = document.createElement("a");
   a.href = url;
   a.download = "generated-melody.mp3";

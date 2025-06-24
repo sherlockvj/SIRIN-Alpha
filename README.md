@@ -4,7 +4,7 @@ A responsive web app that generates random melodies using [Tone.js](https://tone
 
 ---
 
-## ✨ Features
+## Features
 
 - Generate a new melody every time with a click
 - Play/pause music with Tone.js
@@ -15,11 +15,11 @@ A responsive web app that generates random melodies using [Tone.js](https://tone
 
 ## Live Demo
 
-> [🔗 Click here to try it](#) *(Add your GitHub Pages or Netlify/Vercel link)*
+> [🔗 Click here to try it](https://sherlockvj.github.io/SIRIN-Alpha/) 
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Tone.js** – synth + sequencing
 - **JavaScript** – interactivity
@@ -28,7 +28,7 @@ A responsive web app that generates random melodies using [Tone.js](https://tone
 
 ---
 
-## 📦 Installation
+## Installation
 
 Clone this repo and open `index.html` in your browser:
 
