@@ -1,6 +1,6 @@
 # 🎵 HackClub Music Generator
 
-A responsive web app that generates random melodies using [Tone.js](https://tonejs.github.io/), visualizes them with waveform and piano keys, and allows users to download the melody as JSON or MP3.
+A responsive web app that generates random melodies using [Tone.js](https://tonejs.github.io/), visualizes them with waveform and piano keys, and allows users to download the melody as MP3.
 
 ---
 
