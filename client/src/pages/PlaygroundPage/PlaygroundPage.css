@@ -1,0 +1,236 @@
+.playground-wrapper {
+    min-height: 100vh;
+    background: #0d0d1f;
+    color: #f0f0f0;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+
+/* ====== Header Section ====== */
+.playground-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.playground-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.playground-subtext {
+    font-size: 1rem;
+    color: #aaaaaa;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ====== Main Container ====== */
+.playground-container {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 1rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ====== Section Styles ====== */
+.canvas-section,
+.music-section {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    background: #121221;
+    border: 1px solid #222;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #ffffffdd;
+}
+
+/* ====== Canvas Area ====== */
+#drawing-canvas {
+    background-color: #181818;
+    border: 1px solid #333;
+    border-radius: 10px;
+    width: 100%;
+    height: 300px;
+    cursor: crosshair;
+}
+
+/* ====== Tools ====== */
+.canvas-tools,
+.music-controls {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.action-btn {
+    background: #1f1f2e;
+    color: #eeeeee;
+    border: 1px solid #00ffe744;
+    padding: 0.6rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background-color: #28283a;
+    border-color: #00ffe7aa;
+    color: #00ffe7;
+}
+
+.color-picker {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    background: none;
+}
+
+/* ====== Music Box ====== */
+.music-box {
+    background: #161626;
+    border: 1px dashed #444;
+    padding: 2rem;
+    width: 80%;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+    .playground-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    #drawing-canvas {
+        height: 250px;
+    }
+
+    .tool-btn,
+    .action-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+.active-tool {
+    background-color: #272740;
+    border: 1px solid #00ffe7;
+    color: #00ffe7;
+}
+
+.tool-btn {
+    background: #191932;
+    color: white;
+    border: 1px solid #333;
+    padding: 8px 16px;
+    margin: 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+    background: #282852;
+}
+
+.active-tool {
+    background-color: #1e1e2e;
+    color: #00ffe7;
+    border: 1px solid #00ffe7;
+}
+
+.color-picker {
+    margin-left: 12px;
+    height: 36px;
+    width: 36px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.generate-music-wrapper {
+    margin-top: 1.5rem;
+    text-align: center;
+    width: 100%;
+}
+
+.generate-btn {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00ffe7;
+    background: rgba(0, 255, 231, 0.08);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 231, 0.25);
+    box-shadow: 0 0 10px rgba(0, 255, 231, 0.2);
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.generate-btn:hover {
+    background: rgba(0, 255, 231, 0.15);
+    box-shadow: 0 0 18px rgba(0, 255, 231, 0.4);
+    transform: scale(1.03);
+}
+
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-message {
+    font-weight: 600;
+    font-size: 1rem;
+    background: linear-gradient(90deg, #00ffe7, #ff007f, #00ffe7);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 4s linear infinite;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
