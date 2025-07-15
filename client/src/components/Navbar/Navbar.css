@@ -1,0 +1,111 @@
+.navbar {
+  width: 100%;
+  padding: 1rem 3vw;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  box-sizing: border-box;
+}
+
+/* === Brand Logo === */
+.navbar-logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #00ffe7;
+  background: rgba(0, 255, 231, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0, 255, 231, 0.2);
+  border: 1px solid rgba(0, 255, 231, 0.25);
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.navbar-logo:hover {
+  background: rgba(0, 255, 231, 0.2);
+  box-shadow: 0 0 12px rgba(0, 255, 231, 0.4);
+}
+/* === Desktop Nav Links === */
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar-links a {
+  color: #ffffffcc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  color: #ff007f;
+}
+
+/* === Hamburger Icon === */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 6px;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background: #00ffe7;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* === Mobile View === */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #0d0d1f;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .navbar-links.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .navbar-links a {
+    padding: 0.75rem 0;
+    font-size: 1.1rem;
+  }
+
+  .hamburger.open .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .hamburger.open .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.open .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+}

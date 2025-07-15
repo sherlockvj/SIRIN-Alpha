@@ -1,0 +1,199 @@
+/* ====== Base Styles ====== */
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #0d0d1f;
+  color: white;
+}
+
+/* ====== Wrapper & Layout ====== */
+.landing-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom right, #0d0d1f, #000000);
+  width: 100%;
+}
+
+/* ====== Hero Container ====== */
+.landing-container {
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* ====== Glowing Backgrounds ====== */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.6;
+  z-index: 0;
+}
+
+.cyan-glow {
+  width: 500px;
+  height: 500px;
+  background: #00f0ff;
+  top: 15%;
+  left: -10%;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.pink-glow {
+  width: 400px;
+  height: 400px;
+  background: #ff007f;
+  bottom: 10%;
+  right: -8%;
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+/* ====== Hero Content ====== */
+.landing-content {
+  max-width: 800px;
+  z-index: 1;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  word-wrap: break-word;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #00ffe7, #ff007f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtext {
+  font-size: 1.25rem;
+  color: #cccccc;
+  margin-bottom: 2.2rem;
+  line-height: 1.6;
+  padding: 0 1rem;
+}
+
+/* ====== Buttons ====== */
+.landing-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.try-now-btn {
+  background-color: #00ffe7;
+  color: #000;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 15px #00ffe7;
+  transition: all 0.3s ease;
+}
+
+.try-now-btn:hover {
+  background-color: #00c9c2;
+  box-shadow: 0 0 20px #00ffe7;
+}
+
+.how-it-works-link {
+  background-color: transparent;
+  color: #00ffe7;
+  border: 2px solid #00ffe7;
+  border-radius: 30px;
+  padding: 0.6rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px #00ffe744;
+}
+
+.how-it-works-link:hover {
+  background-color: #ff007f;
+  color: #000;
+  border-color: #ff007f;
+  box-shadow: 0 0 15px #ff007f88;
+}
+
+/* ====== Responsive Breakpoints ====== */
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 2.6rem;
+  }
+
+  .hero-subtext {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtext {
+    font-size: 1rem;
+    padding: 0;
+  }
+
+  .try-now-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .landing-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtext {
+    font-size: 0.95rem;
+  }
+
+  .try-now-btn {
+    font-size: 0.95rem;
+    padding: 0.7rem 1.5rem;
+  }
+
+  .how-it-works-link {
+    font-size: 0.95rem;
+  }
+}
