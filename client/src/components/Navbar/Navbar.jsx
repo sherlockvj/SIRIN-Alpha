@@ -22,7 +22,7 @@ const Navbar = () => {
       </div>
 
       <nav className={`navbar-links ${menuOpen ? "active" : ""}`}>
-        <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
+        <a href="/#how-it-works" onClick={() => setMenuOpen(false)}>
           How It Works
         </a>
         <Link to="/playground" onClick={() => setMenuOpen(false)}>
