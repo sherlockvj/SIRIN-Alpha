@@ -1,37 +1,49 @@
-# 🎵 HackClub Music Generator
+# 🎨🎶 Sirin — Sketch to Sound Generator
 
-A responsive web app that generates random melodies using [Tone.js](https://tonejs.github.io/), visualizes them with waveform and piano keys, and allows users to download the melody as MP3.
+**Sirin** is a futuristic creative playground that transforms your freehand sketches into generative music. Simply draw on the canvas, and let the AI convert your strokes into melodic, harmonic, and rhythmic musical patterns — in real time!
 
----
-
-## Features
-
-- Generate a new melody every time with a click
-- Play/pause music with Tone.js
-- Responsive design for mobile/tablet
-- Download Rendered audio as `.mp3`
+> 🌐 Try it live https://sirin-alpha.vercel.app/
 
 ---
 
-## Live Demo
+## 🚀 Aim
 
-> [🔗 Click here to try it](https://sherlockvj.github.io/SIRIN-Alpha/) 
-
----
-
-## Tech Stack
-
-- **Tone.js** – synth + sequencing
-- **JavaScript** – interactivity
-- **HTML5 + CSS3** – layout & visuals
-- **Canvas API** – waveform rendering
+To build an intuitive and engaging experience that bridges **visual creativity with music generation**. Sirin aims to make **music composition more accessible and playful** for everyone — from artists and kids to developers and musicians.
 
 ---
 
-## Installation
+## ✨ Features
 
-Clone this repo and open `index.html` in your browser:
+- 🎨 **Freehand Sketch Canvas** — Draw with a brush, erase, undo/redo, and pick neon colors.
+- 🎵 **AI Music Generator** — Converts canvas strokes into MIDI-based musical compositions.
+- ⚙️ **Dynamic Audio Synthesis** — Plays your music instantly in-browser using [Tone.js](https://tonejs.github.io/).
+- 🎚️ **Visual Playback** — Notes appear as animated tiles when music is playing.
+- 🎉 **Custom Toasts** — Get real-time feedback like "Music Generated!" with beautiful UI prompts.
+- 🧠 **No File Upload Needed** — All processing is done via base64 image exchange.
 
-```bash
-git clone https://github.com/sherlockvj/SIRIN-Alpha.git
-cd tonejs-music-generator
+---
+
+## 🧠 How It Works
+
+1. **Draw a sketch** on the canvas using brushes and neon colors.
+2. Hit **"Generate Music"**.
+3. The canvas is converted to a **base64 PNG** and sent to a **Node.js backend**.
+4. The backend:
+   - Uses **Jimp** to analyze image brightness per grid.
+   - Maps brightness + position to MIDI note, velocity, and timing.
+   - Creates MIDI using **@tonejs/midi** and returns it as base64.
+5. The frontend uses **Tone.js** to:
+   - Convert MIDI into musical notes.
+   - Render animated notes and play them live in the browser.
+
+---
+
+## 📦 Tech Stack
+
+| Frontend | Backend | Other |
+|----------|---------|-------|
+| React + CSS | Node.js + Express | Jimp, @tonejs/midi |
+| Tone.js | REST APIs | Render (deployment) |
+
+---
+

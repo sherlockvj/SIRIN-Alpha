@@ -224,14 +224,26 @@ const PlaygroundPage = () => {
                         <input type="color" className="color-picker" value={color} style={{ pointerEvents: isGenerating ? "none" : "auto" }} onChange={(e) => setColor(e.target.value)} disabled={tool === "eraser" || isGenerating} />
                         <button className="tool-btn" onClick={handleUndo} style={{ pointerEvents: isGenerating ? "none" : "auto" }} disabled={isGenerating}>↩️ Undo</button>
                         <button className="tool-btn" onClick={handleRedo} style={{ pointerEvents: isGenerating ? "none" : "auto" }} disabled={isGenerating}>↪️ Redo</button>
-                        <button className="generate-btn" style={{ pointerEvents: isGenerating ? "none" : "auto" }} onClick={handleGenerate} disabled={isGenerating}>
-                            {isGenerating ? "⏳ Generating..." : "🎶 Generate Music"}
-                        </button>
                     </div>
+
+                    <p className="generate-note">
+                        💡 <strong>Tip:</strong> Always click <strong>"Generate Music"</strong> after drawing to transform your sketch into sound!
+                    </p>
                 </div>
 
                 <div className="music-section">
                     <h2 className="section-title">Generated Notes</h2>
+
+                    <div className="generate-music-container">
+                        <button
+                            className="generate-music-btn"
+                            onClick={handleGenerate}
+                            disabled={isGenerating}
+                        >
+                            {isGenerating ? "⏳ Generating..." : "🎶 Generate Music"}
+                        </button>
+                    </div>
+
                     <div className="music-tiles-container">
                         {isGenerating ? (
                             <p className="loading-message">{loadingMessages[loadingIndex]}</p>

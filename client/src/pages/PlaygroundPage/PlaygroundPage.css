@@ -286,3 +286,45 @@
     color: #111;
     transform: scale(1.1);
 }
+
+.generate-music-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.generate-music-btn {
+  background: linear-gradient(90deg, #00ffe7, #00b8d4);
+  color: #0d0d1f;
+  border: none;
+  padding: 14px 26px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 255, 231, 0.6);
+  transition: all 0.3s ease;
+}
+
+.generate-music-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 255, 231, 0.9);
+}
+
+.generate-music-btn:disabled {
+  background: #888;
+  color: #222;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.generate-note {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: #00ffe7;
+  text-align: center;
+  background-color: #111827;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 255, 231, 0.2);
+}
