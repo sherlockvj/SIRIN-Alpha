@@ -63,19 +63,25 @@ const PlaygroundPage = () => {
 
         const getPos = (e) => {
             const rect = canvas.getBoundingClientRect();
-            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
         };
 
-        const handleMouseDown = (e) => {
+        const handleStart = (e) => {
             if (isGenerating) return;
+            if (e.cancelable) e.preventDefault();
+
             const { x, y } = getPos(e);
             isDrawingRef.current = true;
             ctx.beginPath();
             ctx.moveTo(x, y);
         };
 
-        const handleMouseMove = (e) => {
+        const handleMove = (e) => {
             if (!isDrawingRef.current || isGenerating) return;
+            if (e.cancelable) e.preventDefault();
+
             const { x, y } = getPos(e);
             ctx.globalCompositeOperation = toolRef.current === "brush" ? "source-over" : "destination-out";
             ctx.strokeStyle = toolRef.current === "brush" ? colorRef.current : "rgba(0,0,0,1)";
@@ -83,21 +89,31 @@ const PlaygroundPage = () => {
             ctx.stroke();
         };
 
-        const handleMouseUp = () => {
+        const handleEnd = () => {
             if (!isDrawingRef.current) return;
             isDrawingRef.current = false;
             ctx.closePath();
             saveState();
         };
 
-        canvas.addEventListener("mousedown", handleMouseDown);
-        canvas.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
+        // Mouse events
+        canvas.addEventListener("mousedown", handleStart);
+        canvas.addEventListener("mousemove", handleMove);
+        window.addEventListener("mouseup", handleEnd);
+
+        // Touch events
+        canvas.addEventListener("touchstart", handleStart, { passive: false });
+        canvas.addEventListener("touchmove", handleMove, { passive: false });
+        window.addEventListener("touchend", handleEnd);
 
         return () => {
-            canvas.removeEventListener("mousedown", handleMouseDown);
-            canvas.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
+            canvas.removeEventListener("mousedown", handleStart);
+            canvas.removeEventListener("mousemove", handleMove);
+            window.removeEventListener("mouseup", handleEnd);
+
+            canvas.removeEventListener("touchstart", handleStart);
+            canvas.removeEventListener("touchmove", handleMove);
+            window.removeEventListener("touchend", handleEnd);
         };
     }, []);
 
@@ -148,7 +164,6 @@ const PlaygroundPage = () => {
             const midi = new Midi(bytes);
             setMidiBuffer(midi);
 
-            // Extract note tiles
             const tiles = [];
             midi.tracks.forEach((track) => {
                 track.notes.forEach((note, index) => {
@@ -215,6 +230,7 @@ const PlaygroundPage = () => {
                             cursor: tool === "eraser" ? "cell" : "crosshair",
                             pointerEvents: isGenerating ? "none" : "auto",
                             opacity: 1,
+                            touchAction: "none", // prevent panning on mobile
                         }}
                     />
 

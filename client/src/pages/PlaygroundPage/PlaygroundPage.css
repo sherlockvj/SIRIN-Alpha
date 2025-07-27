@@ -138,6 +138,10 @@
         width: 100%;
         max-width: 200px;
     }
+
+    .canvas-section {
+        padding: 0;
+    }
 }
 
 .active-tool {
