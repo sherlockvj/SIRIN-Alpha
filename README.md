@@ -4,13 +4,11 @@
 
 > Try it live: [https://sirin-alpha.vercel.app](https://sirin-alpha.vercel.app)
 
----
 
 ## Project Goal
 
 The main goal behind Sirin is to make music creation feel playful, intuitive, and accessible — especially for people who may not have any background in music. Whether you're a developer, an artist, a musician, or just someone curious about generative art, Sirin gives you a fun new way to explore the intersection of drawing and sound.
 
----
 
 ## Key Features
 
@@ -21,7 +19,6 @@ The main goal behind Sirin is to make music creation feel playful, intuitive, an
 - **Instant Feedback** – The app gives you visual cues and status updates like when your music is successfully generated.
 - **No Uploads Required** – Sketches are processed via base64 image transfer; nothing is stored or uploaded.
 
----
 
 ## How It Works
 
@@ -35,7 +32,6 @@ The main goal behind Sirin is to make music creation feel playful, intuitive, an
    - Decode the MIDI data.
    - Play it as music while showing animated note tiles in sync.
 
----
 
 ## Tech Stack
 
@@ -44,7 +40,6 @@ The main goal behind Sirin is to make music creation feel playful, intuitive, an
 | React + CSS     | Node.js + Express   | Jimp, @tonejs/midi |
 | Tone.js         | RESTful APIs        | Hosted on Render   |
 
----
 
 ## Future Enhancements
 
@@ -55,5 +50,3 @@ We're excited to keep improving Sirin. Here's what's coming next:
 3. **Better Guidance** – Provide tips, examples, and prompts to help users create more interesting musical outputs.
 4. **User Accounts** – Allow users to sign up and log in.
 5. **Tone History & Saving** – Give users the ability to save and revisit their previous creations.
-
----
