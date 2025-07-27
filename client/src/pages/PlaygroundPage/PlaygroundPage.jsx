@@ -30,12 +30,15 @@ const PlaygroundPage = () => {
     const [tool, setTool] = useState("brush");
     const [color, setColor] = useState("#00ffe7");
     const [isGenerating, setIsGenerating] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [loadingIndex, setLoadingIndex] = useState(0);
     const [toast, setToast] = useState(null);
     const [errorToast, setErrorToast] = useState(null);
     const [noteTiles, setNoteTiles] = useState([]);
     const [playingNoteIndex, setPlayingNoteIndex] = useState(-1);
     const [midiBuffer, setMidiBuffer] = useState(null);
+
+    const [isDownloading, setIsDownloading] = useState(false);
 
     const toolRef = useRef(tool);
     const colorRef = useRef(color);
@@ -63,25 +66,28 @@ const PlaygroundPage = () => {
 
         const getPos = (e) => {
             const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
+            if (e.touches) {
+                return {
+                    x: e.touches[0].clientX - rect.left,
+                    y: e.touches[0].clientY - rect.top,
+                };
+            }
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top,
+            };
         };
 
-        const handleStart = (e) => {
+        const startDrawing = (e) => {
             if (isGenerating) return;
-            if (e.cancelable) e.preventDefault();
-
             const { x, y } = getPos(e);
             isDrawingRef.current = true;
             ctx.beginPath();
             ctx.moveTo(x, y);
         };
 
-        const handleMove = (e) => {
+        const draw = (e) => {
             if (!isDrawingRef.current || isGenerating) return;
-            if (e.cancelable) e.preventDefault();
-
             const { x, y } = getPos(e);
             ctx.globalCompositeOperation = toolRef.current === "brush" ? "source-over" : "destination-out";
             ctx.strokeStyle = toolRef.current === "brush" ? colorRef.current : "rgba(0,0,0,1)";
@@ -89,31 +95,30 @@ const PlaygroundPage = () => {
             ctx.stroke();
         };
 
-        const handleEnd = () => {
+        const stopDrawing = () => {
             if (!isDrawingRef.current) return;
             isDrawingRef.current = false;
             ctx.closePath();
             saveState();
         };
 
-        // Mouse events
-        canvas.addEventListener("mousedown", handleStart);
-        canvas.addEventListener("mousemove", handleMove);
-        window.addEventListener("mouseup", handleEnd);
+        // Mouse Events
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("mousemove", draw);
+        window.addEventListener("mouseup", stopDrawing);
 
-        // Touch events
-        canvas.addEventListener("touchstart", handleStart, { passive: false });
-        canvas.addEventListener("touchmove", handleMove, { passive: false });
-        window.addEventListener("touchend", handleEnd);
+        // Touch Events
+        canvas.addEventListener("touchstart", startDrawing, { passive: false });
+        canvas.addEventListener("touchmove", draw, { passive: false });
+        window.addEventListener("touchend", stopDrawing);
 
         return () => {
-            canvas.removeEventListener("mousedown", handleStart);
-            canvas.removeEventListener("mousemove", handleMove);
-            window.removeEventListener("mouseup", handleEnd);
-
-            canvas.removeEventListener("touchstart", handleStart);
-            canvas.removeEventListener("touchmove", handleMove);
-            window.removeEventListener("touchend", handleEnd);
+            canvas.removeEventListener("mousedown", startDrawing);
+            canvas.removeEventListener("mousemove", draw);
+            window.removeEventListener("mouseup", stopDrawing);
+            canvas.removeEventListener("touchstart", startDrawing);
+            canvas.removeEventListener("touchmove", draw);
+            window.removeEventListener("touchend", stopDrawing);
         };
     }, []);
 
@@ -172,7 +177,6 @@ const PlaygroundPage = () => {
             });
             setNoteTiles(tiles);
             setToast("🎶 Music generated! Ready to play");
-
         } catch (err) {
             console.error("Error:", err);
             setErrorToast("❌ Failed to generate music");
@@ -184,25 +188,61 @@ const PlaygroundPage = () => {
     const handlePlay = async () => {
         if (!midiBuffer) return;
         await Tone.start();
-        const now = Tone.now();
         const synth = new Tone.PolySynth().toDestination();
-
+        const now = Tone.now();
         setPlayingNoteIndex(0);
+        setIsPlaying(true);
 
         const allNotes = midiBuffer.tracks.flatMap(track => track.notes);
-
         allNotes.forEach((note, i) => {
             synth.triggerAttackRelease(note.name, note.duration, now + note.time, note.velocity);
             setTimeout(() => setPlayingNoteIndex(i), note.time * 1000);
         });
 
-        setTimeout(() => setPlayingNoteIndex(-1), (Math.max(...allNotes.map(n => n.time)) + 2) * 1000);
+        setTimeout(() => {
+            setPlayingNoteIndex(-1);
+            setIsPlaying(false);
+        }, (Math.max(...allNotes.map(n => n.time)) + 2) * 1000);
     };
 
     const handleStop = () => {
         Tone.Transport.stop();
         setPlayingNoteIndex(-1);
+        setIsPlaying(false);
     };
+
+    const handleDownload = async () => {
+        if (!midiBuffer) return;
+
+        setIsDownloading(true);
+        await Tone.start();
+
+        const recorder = new Tone.Recorder();
+        const synth = new Tone.PolySynth().connect(recorder);
+        recorder.start();
+
+        const allNotes = midiBuffer.tracks.flatMap(track => track.notes);
+        const now = Tone.now();
+
+        allNotes.forEach((note) => {
+            synth.triggerAttackRelease(note.name, note.duration, now + note.time, note.velocity);
+        });
+
+        const duration = Math.max(...allNotes.map(n => n.time + n.duration)) + 1;
+
+        setTimeout(async () => {
+            const recording = await recorder.stop();
+            const url = URL.createObjectURL(recording);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "generated-music.wav";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setIsDownloading(false);
+        }, duration * 1000);
+    };
+
 
     return (
         <div className="playground-wrapper">
@@ -230,16 +270,16 @@ const PlaygroundPage = () => {
                             cursor: tool === "eraser" ? "cell" : "crosshair",
                             pointerEvents: isGenerating ? "none" : "auto",
                             opacity: 1,
-                            touchAction: "none", // prevent panning on mobile
+                            touchAction: "none"
                         }}
                     />
 
                     <div className="canvas-tools">
-                        <button className={`tool-btn ${tool === "brush" ? "active-tool" : ""}`} style={{ pointerEvents: isGenerating ? "none" : "auto" }} onClick={() => setTool("brush")} disabled={isGenerating}>🖌️ Brush</button>
-                        <button className={`tool-btn ${tool === "eraser" ? "active-tool" : ""}`} style={{ pointerEvents: isGenerating ? "none" : "auto" }} onClick={() => setTool("eraser")} disabled={isGenerating}>🧽 Eraser</button>
-                        <input type="color" className="color-picker" value={color} style={{ pointerEvents: isGenerating ? "none" : "auto" }} onChange={(e) => setColor(e.target.value)} disabled={tool === "eraser" || isGenerating} />
-                        <button className="tool-btn" onClick={handleUndo} style={{ pointerEvents: isGenerating ? "none" : "auto" }} disabled={isGenerating}>↩️ Undo</button>
-                        <button className="tool-btn" onClick={handleRedo} style={{ pointerEvents: isGenerating ? "none" : "auto" }} disabled={isGenerating}>↪️ Redo</button>
+                        <button className={`tool-btn ${tool === "brush" ? "active-tool" : ""}`} onClick={() => setTool("brush")} disabled={isGenerating}>🖌️ Brush</button>
+                        <button className={`tool-btn ${tool === "eraser" ? "active-tool" : ""}`} onClick={() => setTool("eraser")} disabled={isGenerating}>🧽 Eraser</button>
+                        <input type="color" className="color-picker" value={color} onChange={(e) => setColor(e.target.value)} disabled={tool === "eraser" || isGenerating} />
+                        <button className="tool-btn" onClick={handleUndo} disabled={isGenerating}>↩️ Undo</button>
+                        <button className="tool-btn" onClick={handleRedo} disabled={isGenerating}>↪️ Redo</button>
                     </div>
 
                     <p className="generate-note">
@@ -251,11 +291,7 @@ const PlaygroundPage = () => {
                     <h2 className="section-title">Generated Notes</h2>
 
                     <div className="generate-music-container">
-                        <button
-                            className="generate-music-btn"
-                            onClick={handleGenerate}
-                            disabled={isGenerating}
-                        >
+                        <button className="generate-music-btn" onClick={handleGenerate} disabled={isGenerating}>
                             {isGenerating ? "⏳ Generating..." : "🎶 Generate Music"}
                         </button>
                     </div>
@@ -277,10 +313,26 @@ const PlaygroundPage = () => {
                     </div>
 
                     <div className="music-controls">
-                        <button className="action-btn" onClick={handlePlay} disabled={!midiBuffer}>▶️ Play</button>
-                        <button className="action-btn" onClick={handleStop} disabled={!midiBuffer}>⏹️ Stop</button>
+                        <button className="action-btn" onClick={handlePlay} disabled={!midiBuffer || isPlaying}>▶️ Play</button>
+                        <button className="action-btn" onClick={handleStop} disabled={!midiBuffer || !isPlaying}>⏹️ Stop</button>
                         <button className="action-btn" onClick={() => window.location.reload()}>🔄 Reset</button>
                     </div>
+
+                    {midiBuffer && (
+                        isDownloading ? (
+                            <div className="downloading-message">
+                                ⏳ Rendering audio & preparing download...
+                            </div>
+                        ) : (
+                            <button
+                                className="action-btn full-width-download"
+                                onClick={handleDownload}
+                            >
+                                ⬇️ Download Music (.wav)
+                            </button>
+                        )
+                    )}
+
                 </div>
             </div>
         </div>

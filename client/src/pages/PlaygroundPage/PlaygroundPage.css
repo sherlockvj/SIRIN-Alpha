@@ -332,3 +332,26 @@
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 255, 231, 0.2);
 }
+
+.full-width-download {
+    margin-top: 12px;
+    width: 100%;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.downloading-message {
+    margin-top: 12px;
+    width: 100%;
+    background-color: #111827;
+    color: #00ffe7;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,255,231,0.1);
+}
